@@ -1,0 +1,1432 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // provider = "mysql"
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model user {
+  id                             String                           @id @default(cuid())
+  // id for mongo db
+  // id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  email                          String                           @unique
+  password                       String                           @default("")
+  contactPersonName              String                           @default("")
+  companyName                    String                           @default("")
+  addressLine1                   String                           @default("")
+  addressLine2                   String                           @default("")
+  city                           String                           @default("")
+  state                          String                           @default("")
+  country                        String                           @default("")
+  pin                            String                           @default("")
+  webpage                        String                           @default("")
+  phoneNumber                    String                           @default("")
+  gstNo                          String                           @default("")
+  companyLogo                    String                           @default("")
+  isOnline                       Boolean                          @default(false)
+  lastOnline                     DateTime                         @default(now())
+  ManageUserShippingBill         ManageUserShippingBill[]
+  role                           Role                             @default(USER)
+  currentShippingBillId          String                           @default("")
+  part1Section1                  Part1Section1[]
+  part1Section2                  Part1Section2[]
+  part1Section3                  Part1Section3[]
+  part2Section1                  Part2Section1[]
+  part2Section2                  Part2Section2[]
+  part2Section3                  Part2Section3[]
+  part3Section1                  Part3Section1[]
+  part3Section2                  Part3Section2[]
+  part3Section3                  Part3Section3[]
+  part4Section1                  Part4Section1[]
+  part4Section2                  Part4Section2[]
+  part4Section3                  Part4Section3[]
+  part4Section4                  Part4Section4[]
+  part4Section5                  Part4Section5[]
+  part4Section6                  Part4Section6[]
+  part5                          Part5[]
+  BasicSheet                     BasicSheet[]
+  Annexure1                      Annexure1[]
+  AnnexureA                      AnnexureA[]
+  IndirectExportBasicSheet       IndirectExportBasicSheet[]
+  IndirectExportAnneuxure1       IndirectExportAnneuxure1[]
+  IndirectExportAnneuxure2       IndirectExportAnneuxure2[]
+  IndirectExportCalculationSheet IndirectExportCalculationSheet[]
+  IndirectExportNewDeptSheet     IndirectExportNewDeptSheet[]
+  IndirectExportAnneuxureA       IndirectExportAnneuxureA[]
+  Client                         Client[]
+  EpcgList                       EpcgList[]
+  Invoice                        Invoice[]
+  EWayBillDetails                EWayBillDetails[]
+  // ReportEPCGLicenseSummary       ReportEPCGLicenseSummary[]
+  EBRC                           EBRC[]
+  EInvoice                       EInvoice[]
+  AdvanceLicense                 AdvanceLicense[]
+  DocumentEpcgLicense            DocumentEpcgLicense[]
+  EpcgLicenseSummary             EpcgLicenseSummary[]
+}
+
+model ExcelDataFinal {
+  // set id for sql
+  // id                   String  @id @default(auto()) @map("_id") @db.ObjectId
+  id                   String   @id @default(cuid())
+  companyName          String
+  srNo                 String
+  shippingBillNo       String
+  shippingBillDate     String?
+  thirdPartyExporter   String?
+  hsCodeAndDescription String?
+  epcgLicNo            String?
+  cifValue             String   @default("0.00")
+  freight              String   @default("0.00")
+  insurance            String   @default("0.00")
+  brc                  String   @default("0.00")
+  exchangeRate         String   @default("0.0000")
+  cifValue2            String   @default("0.00")
+  freight2             String   @default("0.00")
+  insurance2           String   @default("0.00")
+  brc2                 String   @default("0.00")
+  exchangeRate2        String   @default("0.0000")
+  product              String?
+  remarks              String?
+  uploadedDate         DateTime @default(now())
+}
+
+model Part1Section1 {
+  // id               String  @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String                  @id @default(cuid())
+  exportersName            String?
+  exportersAddress         String?
+  type                     String?
+  adCode                   String?
+  rbiWaiverNo              String?
+  rbiWaiverDt              String?
+  cbName                   String?
+  aeo                      String?
+  consigneeName            String?
+  consigneeAddress         String?
+  gstinType                String?
+  forexBankAcNo            String?
+  dbkBankAcNo              String?
+  ifscNo                   String?
+  mode                     String?
+  assess                   String?
+  //! change if it is mongo db
+  user                     user                    @relation(fields: [addedByUserId], references: [id])
+  addedByUserId            String
+  ManageUserShippingBill   ManageUserShippingBill? @relation(fields: [manageUserShippingBillId], references: [id])
+  manageUserShippingBillId String?
+  uploadedDate             DateTime                @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model Part1Section2 {
+  // id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String                  @id @default(cuid())
+  exmn                     String?
+  jobbing                  String?
+  meis                     String?
+  dbk                      String?
+  pkgs                     String?
+  grossWeight              String?
+  volWeight                String?
+  packType                 String?
+  ieCode                   String?
+  pan                      String?
+  vesselName               String?
+  portDischarge            String?
+  exchRate                 String?
+  fobValue                 String?
+  freight                  String?
+  insurance                String?
+  //! change if it is mongo db
+  user                     user                    @relation(fields: [addedByUserId], references: [id])
+  addedByUserId            String
+  ManageUserShippingBill   ManageUserShippingBill? @relation(fields: [manageUserShippingBillId], references: [id])
+  manageUserShippingBillId String?
+  uploadedDate             DateTime                @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model Part1Section3 {
+  // id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String                  @id @default(cuid())
+  discount                 String?
+  commission               String?
+  deductions               String?
+  pc                       String?
+  duty                     String?
+  cess                     String?
+  dbkClaim                 String?
+  igstAmt                  String?
+  cessAmt                  String?
+  igstValue                String?
+  rodtepAmt                String?
+  rosctlAmt                String?
+  mawbNo                   String?
+  hawbNo                   String?
+  //! change if it is mongo db
+  user                     user                    @relation(fields: [addedByUserId], references: [id])
+  addedByUserId            String
+  ManageUserShippingBill   ManageUserShippingBill? @relation(fields: [manageUserShippingBillId], references: [id])
+  manageUserShippingBillId String?
+  uploadedDate             DateTime                @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model Part2Section1 {
+  // id           String @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String                  @id @default(cuid())
+  sNo                      String
+  invoiceNo                String
+  invoiceDt                String
+  poNo                     String
+  poDt                     String
+  locNo                    String
+  locDt                    String
+  contractNo               String
+  contractDt               String
+  adCode                   String
+  invTerm                  String
+  exporterName             String
+  //! change if it is mongo db
+  user                     user                    @relation(fields: [addedByUserId], references: [id])
+  addedByUserId            String
+  ManageUserShippingBill   ManageUserShippingBill? @relation(fields: [manageUserShippingBillId], references: [id])
+  manageUserShippingBillId String?
+  uploadedDate             DateTime                @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model Part2Section2 {
+  // id                String @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String                  @id @default(cuid())
+  exporterAddress          String
+  buyerName                String
+  buyerAddress             String
+  thirdPartyName           String
+  thirdPartyAddress        String
+  buyerAeoStatus           String
+  invoiceValue             String
+  fobValue                 String
+  freight                  String
+  insurance                String
+  discount                 String
+  commission               String
+  //! change if it is mongo db
+  user                     user                    @relation(fields: [addedByUserId], references: [id])
+  addedByUserId            String
+  ManageUserShippingBill   ManageUserShippingBill? @relation(fields: [manageUserShippingBillId], references: [id])
+  manageUserShippingBillId String?
+  uploadedDate             DateTime                @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model Part2Section3 {
+  // id           String @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String                  @id @default(cuid())
+  deduct                   String
+  pc                       String
+  exchangeRate             String
+  itemSno                  String
+  hsCd                     String
+  description              String
+  quantity                 String
+  uqc                      String
+  rate                     String
+  valueFc                  String
+  //! change if it is mongo db
+  user                     user                    @relation(fields: [addedByUserId], references: [id])
+  addedByUserId            String
+  ManageUserShippingBill   ManageUserShippingBill? @relation(fields: [manageUserShippingBillId], references: [id])
+  manageUserShippingBillId String?
+  uploadedDate             DateTime                @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model Part3Section1 {
+  // id          String @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String                  @id @default(cuid())
+  invsn                    String
+  itemsn                   String
+  hsCd                     String
+  description              String
+  quantity                 String
+  uqc                      String
+  rate                     String
+  valueFc                  String
+  fobInr                   String
+  pmv                      String
+  //! change if it is mongo db
+  user                     user                    @relation(fields: [addedByUserId], references: [id])
+  addedByUserId            String
+  ManageUserShippingBill   ManageUserShippingBill? @relation(fields: [manageUserShippingBillId], references: [id])
+  manageUserShippingBillId String?
+  uploadedDate             DateTime                @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model Part3Section2 {
+  // id                String @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String                  @id @default(cuid())
+  dutyAmt                  String
+  cessRt                   String
+  cesamt                   String
+  dbkclmd                  String
+  igststat                 String
+  igstValue                String
+  igstAmount               String
+  schcod                   String
+  schemeDescription        String
+  sqcMsr                   String
+  //! change if it is mongo db
+  user                     user                    @relation(fields: [addedByUserId], references: [id])
+  addedByUserId            String
+  ManageUserShippingBill   ManageUserShippingBill? @relation(fields: [manageUserShippingBillId], references: [id])
+  manageUserShippingBillId String?
+  uploadedDate             DateTime                @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model Part3Section3 {
+  // id                String @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String                  @id @default(cuid())
+  sqcUqc                   String
+  stateOfOrigin            String
+  districtOfOrigin         String
+  ptAbroad                 String
+  compCess                 String
+  endUse                   String
+  ftaBenefitAvailed        String
+  rewardBenefit            String
+  thirdPartyItem           String
+  //! change if it is mongo db
+  user                     user                    @relation(fields: [addedByUserId], references: [id])
+  addedByUserId            String
+  ManageUserShippingBill   ManageUserShippingBill? @relation(fields: [manageUserShippingBillId], references: [id])
+  manageUserShippingBillId String?
+  uploadedDate             DateTime                @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model Part4Section1 {
+  // id              String @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String                  @id @default(cuid())
+  invSno                   String
+  itemsn                   String
+  dbkSno                   String
+  qtyWt                    String
+  value                    String
+  rate                     String
+  dbkAmt                   String
+  stalev                   String
+  cenlev                   String
+  rosctlAmt                String
+  invSnoB                  String
+  itemSnoB                 String
+  licenseNo                String
+  descnExportItem          String
+  //! change if it is mongo db
+  user                     user                    @relation(fields: [addedByUserId], references: [id])
+  addedByUserId            String
+  ManageUserShippingBill   ManageUserShippingBill? @relation(fields: [manageUserShippingBillId], references: [id])
+  manageUserShippingBillId String?
+  uploadedDate             DateTime                @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model Part4Section2 {
+  // id                 String @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String                  @id @default(cuid())
+  expSno                   String
+  expqty                   String
+  uqc                      String
+  fobValue                 String
+  sion                     String
+  descnImportItem          String
+  impSno                   String
+  impqt                    String
+  uqcB                     String
+  indigImp                 String
+  beNo                     String
+  beDate                   String
+  portCode                 String
+  descnImportedGoods       String
+  //! change if it is mongo db
+  user                     user                    @relation(fields: [addedByUserId], references: [id])
+  addedByUserId            String
+  ManageUserShippingBill   ManageUserShippingBill? @relation(fields: [manageUserShippingBillId], references: [id])
+  manageUserShippingBillId String?
+  uploadedDate             DateTime                @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model Part4Section3 {
+  // id         String @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String                  @id @default(cuid())
+  qtyImp                   String
+  qtyUsed                  String
+  invsn                    String
+  itmsn                    String
+  info                     String
+  qualifier                String
+  infoCd                   String
+  infoText                 String
+  infoMsr                  String
+  itmsno                   String
+  cSno                     String
+  name                     String
+  code                     String
+  percentage               String
+  //! change if it is mongo db
+  user                     user                    @relation(fields: [addedByUserId], references: [id])
+  addedByUserId            String
+  ManageUserShippingBill   ManageUserShippingBill? @relation(fields: [manageUserShippingBillId], references: [id])
+  manageUserShippingBillId String?
+  uploadedDate             DateTime                @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model Part4Section4 {
+  // id          String @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String                  @id @default(cuid())
+  yieldPct                 String
+  ing                      String
+  controlType              String
+  location                 String
+  stDt                     String
+  endDt                    String
+  resCd                    String
+  resText                  String
+  docypcd                  String
+  icegateId                String
+  irn                      String
+  partyCd                  String
+  issuePla                 String
+  issDt                    String
+  expDt                    String
+  //! change if it is mongo db
+  user                     user                    @relation(fields: [addedByUserId], references: [id])
+  addedByUserId            String
+  ManageUserShippingBill   ManageUserShippingBill? @relation(fields: [manageUserShippingBillId], references: [id])
+  manageUserShippingBillId String?
+  uploadedDate             DateTime                @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model Part4Section5 {
+  // id              String @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String                  @id @default(cuid())
+  sno                      String
+  invoiceNo                String
+  invoiceAmount            String
+  currency                 String
+  container                String
+  seal                     String
+  date                     String
+  ar4Number                String
+  ar4Date                  String
+  commissionerate          String
+  division                 String
+  range                    String
+  iec                      String
+  exporterName             String
+  address                  String
+  //! change if it is mongo db
+  user                     user                    @relation(fields: [addedByUserId], references: [id])
+  addedByUserId            String
+  ManageUserShippingBill   ManageUserShippingBill? @relation(fields: [manageUserShippingBillId], references: [id])
+  manageUserShippingBillId String?
+  uploadedDate             DateTime                @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model Part4Section6 {
+  // id          String @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String                  @id @default(cuid())
+  gstnId                   String
+  gstnType                 String
+  type                     String
+  manufactCd               String
+  sourceState              String
+  transCy                  String
+  invs                     String
+  quantity                 String
+  noOfUnits                String
+  beSiteId                 String
+  beNumber                 String
+  beInvSno                 String
+  beItemS                  String
+  beQty                    String
+  beUqc                    String
+  //! change if it is mongo db
+  user                     user                    @relation(fields: [addedByUserId], references: [id])
+  addedByUserId            String
+  ManageUserShippingBill   ManageUserShippingBill? @relation(fields: [manageUserShippingBillId], references: [id])
+  manageUserShippingBillId String?
+  uploadedDate             DateTime                @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model Part5 {
+  // id                   String @id @default(auto()) @map("_id") @db.ObjectId
+  id                       String                  @id @default(cuid())
+  declarationStatement     String
+  date                     String
+  place                    String
+  authorizedSignatory      String
+  chaName                  String
+  //! change if it is mongo db
+  user                     user                    @relation(fields: [addedByUserId], references: [id])
+  addedByUserId            String
+  ManageUserShippingBill   ManageUserShippingBill? @relation(fields: [manageUserShippingBillId], references: [id])
+  manageUserShippingBillId String?
+  uploadedDate             DateTime                @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model BasicSheet {
+  // set id for sql
+  // id                           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                           String   @id @default(cuid())
+  companyName                  String
+  uploadedDate                 DateTime @default(now())
+  srNo                         String
+  shippingBillNo               String
+  shippingBillDate             String?
+  exportersName                String?
+  hsCodeAndDescription         String?
+  epcgLicNo                    String?
+  cifValue                     String   @default("0.00")
+  freight                      String   @default("0.00")
+  insurance                    String   @default("0.00")
+  brc                          String   @default("0.00")
+  exchangeRateOrProprtionRatio String   @default("0.0000")
+  //
+  cifValue2                    String   @default("0.00")
+  freight2                     String   @default("0.00")
+  insurance2                   String   @default("0.00")
+  brc2                         String   @default("0.00")
+  //
+  exchangeRate                 String   @default("0.0000")
+  product                      String?
+  remarks                      String?
+  user                         user     @relation(fields: [addedByUserId], references: [id])
+  addedByUserId                String
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model Annexure1 {
+  // set id for sql
+  // id                           String  @id @default(auto()) @map("_id") @db.ObjectId
+  id                           String   @id @default(cuid())
+  srNo                         String
+  shippingBillNo               String
+  shippingBillDate             String?
+  shippingBillCifValueInDoller String?
+  brcValue                     String?
+  // Lower of SB and BRC 
+  lowerOfSbAndBrc              String?
+  shippingBillFreight          String?
+  shippingBillInsurance        String?
+  fobValueInDoller             String?
+  ExchangeRatePerShippingBill  String?
+  fobValueInRupees             String?
+  user                         user     @relation(fields: [addedByUserId], references: [id])
+  addedByUserId                String
+  uploadedDate                 DateTime @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model AnnexureA {
+  // id String @id @default(auto()) @map("_id") @db.ObjectId
+  id                         String   @id @default(cuid())
+  srNo                       String
+  productExportered          String
+  shippingBillNumber         String
+  shippingBillDate           String
+  directExportsInRupees      String
+  directExportsInDollars     String
+  deemedExports              String   @default("0.00")
+  thirdPartyExportsInRupees  String   @default("0.00")
+  thirdPartyExportsInDollars String   @default("0.00")
+  byGroupCompany             String   @default("0.00")
+  otherRWseries              String   @default("0.00")
+  totalInRupees              String
+  totalInDollars             String
+  user                       user     @relation(fields: [addedByUserId], references: [id])
+  addedByUserId              String
+  uploadedDate               DateTime @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model ManageUserShippingBill {
+  // id String @id @default(auto()) @map("_id") @db.ObjectId
+  id            String @id @default(cuid())
+  user          user   @relation(fields: [addedByUserId], references: [id])
+  addedByUserId String
+
+  currentExportersName     String          @default("")
+  isCompleted              Boolean         @default(false)
+  isPart1Section1Completed Boolean         @default(false)
+  isPart1Section2Completed Boolean         @default(false)
+  isPart1Section3Completed Boolean         @default(false)
+  isPart2Section1Completed Boolean         @default(false)
+  isPart2Section2Completed Boolean         @default(false)
+  isPart2Section3Completed Boolean         @default(false)
+  isPart3Section1Completed Boolean         @default(false)
+  isPart3Section2Completed Boolean         @default(false)
+  isPart3Section3Completed Boolean         @default(false)
+  isPart4Section1Completed Boolean         @default(false)
+  isPart4Section2Completed Boolean         @default(false)
+  isPart4Section3Completed Boolean         @default(false)
+  isPart4Section4Completed Boolean         @default(false)
+  isPart4Section5Completed Boolean         @default(false)
+  isPart4Section6Completed Boolean         @default(false)
+  isPart5Completed         Boolean         @default(false)
+  Part1Section1            Part1Section1[]
+  Part1Section2            Part1Section2[]
+  Part1Section3            Part1Section3[]
+  Part2Section1            Part2Section1[]
+  Part2Section2            Part2Section2[]
+  Part2Section3            Part2Section3[]
+  Part3Section1            Part3Section1[]
+  Part3Section2            Part3Section2[]
+  Part3Section3            Part3Section3[]
+  Part4Section1            Part4Section1[]
+  Part4Section2            Part4Section2[]
+  Part4Section3            Part4Section3[]
+  Part4Section4            Part4Section4[]
+  Part4Section5            Part4Section5[]
+  Part4Section6            Part4Section6[]
+  Part5                    Part5[]
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model IndirectExportBasicSheet {
+  id                        String   @id @default(cuid())
+  companyName               String
+  srNo                      String
+  shippingBillNo            String
+  shippingBillDate          String?
+  thirdPartyExporter        String
+  hsCodeAndDescription      String
+  epcgLicNo                 String?
+  cifValue                  String   @default("0.00")
+  freight                   String   @default("0.00")
+  insurance                 String   @default("0.00")
+  brc                       String   @default("0.00")
+  exchangeRate              String   @default("0.0000")
+  cifValue2                 String   @default("0.00")
+  freight2                  String   @default("0.00")
+  insurance2                String   @default("0.00")
+  brc2                      String   @default("0.00")
+  exchangeRate2             String   @default("0.0000")
+  invoiceNo                 String
+  invoiceDate               String
+  basicAmount               String
+  invoiceValue              String
+  bankPaymentReceivedDate   String
+  amountReceived            String
+  amountRealised            String
+  qtyAsPerInvoiceAndSbMatch String
+  epcgLicNoInTaxInvoice     String
+  lorryReceiptOrEwayBill    String
+  bankStatement             String
+  product                   String?
+  remarks                   String?
+  user                      user     @relation(fields: [addedByUserId], references: [id])
+  addedByUserId             String
+  uploadedDate              DateTime @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model IndirectExportAnneuxure1 {
+  id                          String   @id @default(cuid())
+  srNo                        String
+  shippingBillNo              String
+  shippingBillDate            String?
+  shippingBillCifValue        String?
+  brcValue                    String?
+  lowerOfSbAndBrc             String?
+  shippingBillFreight         String?
+  shippingBillInsurance       String?
+  fobValueInDollars           String?
+  exchangeRatePerShippingBill String?
+  fobValueInRupees            String?
+  user                        user     @relation(fields: [addedByUserId], references: [id])
+  addedByUserId               String
+  uploadedDate                DateTime @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model IndirectExportAnneuxure2 {
+  id                             String   @id @default(cuid())
+  srNo                           String
+  shippingBillNo                 String
+  shippingBillDate               String?
+  taxInvoiceBillNo               String
+  taxInvoiceDate                 String
+  taxInvoiceBasicAmount          String
+  taxInvoiceTax                  String
+  taxInvoiceInvoiceValue         String
+  paymentDetailsDate             String
+  paymentDetailsAmountReceived   String
+  paymentDetailsAmountRealised   String
+  lowerOfInvoiceAndBankStatement String
+  proportionateAmountOf6ForInRs  String
+  exchangeRatePerShippingBill    String
+  forInUsd                       String
+  user                           user     @relation(fields: [addedByUserId], references: [id])
+  addedByUserId                  String
+  uploadedDate                   DateTime @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model IndirectExportCalculationSheet {
+  id                                     String   @id @default(cuid())
+  srNo                                   String
+  sameProductOrAlternativeProductService String   @default("")
+  shippingBillNo                         String
+  shippingBillDate                       String?
+  fobValueRealizationProceedsRs          String
+  fobValueRealizationProceedsUs          String
+  fobValueAnnexure1Rs                    String
+  fobValueAnnexure1Us                    String
+  fobValueAnnexure2Rs                    String
+  fobValueAnnexure2Us                    String
+  fobValueLowerOf5_6_7Rs                 String
+  fobValueLowerOf5_6_7Us                 String
+  user                                   user     @relation(fields: [addedByUserId], references: [id])
+  addedByUserId                          String
+  uploadedDate                           DateTime @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model IndirectExportNewDeptSheet {
+  id                             String   @id @default(cuid())
+  srNo                           String
+  shippingBillNo                 String
+  shippingBillDate               String?
+  invoiceNo                      String
+  invoiceDate                    String
+  amountRealisedAsPerBrcUs       String
+  amountRealisedAsPerBrcExchRate String
+  amountRealisedAsPerBrcRs       String
+  amountRealisedInBankRs         String
+  amountLessOfCol6And7Rs         String
+  convertedIntoUsd               String
+  user                           user     @relation(fields: [addedByUserId], references: [id])
+  addedByUserId                  String
+  uploadedDate                   DateTime @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model IndirectExportAnneuxureA {
+  id                        String   @id @default(cuid())
+  srNo                      String
+  sameProductOrService      String
+  shippingBillNo            String
+  shippingBillDate          String?
+  directExportsRs           String
+  directExportsUs           String
+  deemedExports             String   @default("0.00")
+  thirdPartyExportsRs       String   @default("0.00")
+  thirdPartyExportsUs       String   @default("0.00")
+  byGroupCompany            String   @default("0.00")
+  otherRnDServicesOrRoyalty String   @default("0.00")
+  totalRs                   String
+  totalUs                   String
+  user                      user     @relation(fields: [addedByUserId], references: [id])
+  addedByUserId             String
+  uploadedDate              DateTime @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model Client {
+  id                 String @id @default(cuid())
+  customerName       String @default("")
+  resource           String?  @default("")
+  dgftCategory       String? @default("")
+  gstCategory        String? @default("")
+  mainCategory       String? @default("")
+  industry           String? @default("")
+  subIndustry        String? @default("")
+  department         String? @default("")
+  freshService       String? @default("")
+  eodcService        String? @default("")
+  basicService       String? @default("")
+  otherDgftService   String? @default("")
+  gstService         String? @default("")
+  mobileNumber1      String? @default("")
+  contactPersonName1 String? @default("")
+  mobileNumber2      String? @default("")
+  contactPersonName2 String? @default("")
+  mailId1            String? @default("")
+  mailId2            String? @default("")
+  address            String? @default("")
+  clientJoiningDate  DateTime? @default(now())
+  ReferanceClient    Boolean @default(false)
+  ReferanceClientId  String? 
+
+  user          user     @relation(fields: [addedByUserId], references: [id])
+  addedByUserId String
+  uploadedDate  DateTime @default(now())
+  
+  // Add relation to ClientTurnover
+  turnover ClientTurnover[]
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model ClientTurnover {
+  id String @id @default(cuid())
+
+  financialYear String @default("00-00") // Format: "22-23", "23-24", etc.
+
+  // Turnover fields
+  domesticTurnover String @default("0.00")
+  directExportTurnover String @default("0.00")
+  merchantExportTurnover String @default("0.00")
+  
+  // Relation to Client
+  client Client @relation(fields: [clientId], references: [id])
+  clientId String
+  
+  uploadedDate DateTime @default(now())
+  
+  @@index([clientId], name: "clientId")
+}
+
+
+
+model EpcgList {
+  id                   String   @id @default(cuid())
+  srNo                 String
+  partyName            String
+  mailId1              String
+  mailId2              String
+  mailId3              String
+  contactPersonMoNo    String
+  contactPersonName    String
+  authorisedPersonMoNo String
+  authorisedPersonName String
+  user                 user     @relation(fields: [addedByUserId], references: [id])
+  addedByUserId        String
+  uploadedDate         DateTime @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model Invoice {
+  id                       String  @id @default(cuid())
+  sellerName               String? @default("")
+  sellerAddress            String? @default("")
+  sellerPanNumber          String? @default("")
+  sellerGstNumber          String? @default("")
+  buyerBillToName          String? @default("")
+  buyerBillToAddress       String? @default("")
+  buyerContactNumber       String? @default("")
+  buyerGstNumber           String? @default("")
+  buyerShipToName          String? @default("")
+  buyerShipToAddress       String? @default("")
+  buyerShipToContactNumber String? @default("")
+  buyerShipToGstNumber     String? @default("")
+  invoiceNumber            String? @default("")
+  invoiceDate              String? @default("")
+  quickResponseCode        String? @default("")
+
+  subTotal            String?  @default("")
+  amountInWords       String?  @default("")
+  notes               String?  @default("")
+  bankName            String?  @default("")
+  accountNumber       String?  @default("")
+  ifscCode            String?  @default("")
+  taxRate             String?  @default("")
+  igst                String?  @default("")
+  termsAndConditions  String?  @default("")
+  authorizedSignature String?  @default("")
+  user                user     @relation(fields: [addedByUserId], references: [id])
+  addedByUserId       String
+  uploadedDate        DateTime @default(now())
+
+  productDetails InvoiceProductDetail[]
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model InvoiceProductDetail {
+  id                             String  @id @default(cuid())
+  productDetailSrNo              String? @default("")
+  productDetailDescription       String? @default("")
+  productDetailHSN               String? @default("")
+  productDetailTypeOfProductsUQC String? @default("")
+  productDetailQty               String? @default("")
+  productDetailRateOfProduct     String? @default("")
+  productDetailAmount            String? @default("")
+  productDetailTaxPayableOnRcm   String? @default("")
+
+  Invoice   Invoice @relation(fields: [invoiceId], references: [id])
+  invoiceId String
+
+  @@index([invoiceId], name: "invoiceId")
+}
+
+model EWayBillDetails {
+  id                                   String   @id @default(cuid())
+  ewaybillNo                           String?
+  ewaybillGeneratedDate                String?
+  ewaybillValidUpto                    String?
+  ewaybillValidFrom                    String?
+  ewaybillModeOfTransportation         String?
+  ewaybillApproxDistance               String?
+  ewaybillDocumentType                 String?
+  ewaybillDocumentNumber               String?
+  ewaybillDocumentDate                 String?
+  ewaybillSupplyType                   String?
+  ewaybillSubType                      String?
+  ewaybillTransactionType              String?
+  ewaybillIrnNo                        String?
+  supplierGstin                        String?
+  supplierName                         String?
+  supplierState                        String?
+  supplierDispatchFromAddress          String?
+  recipientGstin                       String?
+  recipientName                        String?
+  recipientState                       String?
+  recipientShipToAddress               String?
+  goodDetailsHsnCode                   String?
+  goodDetailsProductNameAndDescription String?
+  goodDetailsQuantity                  String?
+  goodDetailsUnit                      String?
+  goodDetailsTaxRate                   String?
+  goodDetailsTotalTaxableAmount        String?
+  goodDetailsCgstAmount                String?
+  goodDetailsSgstAmount                String?
+  goodDetailsIgstAmount                String?
+  goodDetailsCessAmount                String?
+  goodDetailsOtherAmount               String?
+  goodDetailsTotalInvoiceAmount        String?
+  transporterGstnOrEnrolmentId         String?
+  lrNoAndDate                          String?
+  multiVehicleInfo                     String?
+  vehicleType                          String?
+  vehicleNo                            String?
+  user                                 user     @relation(fields: [addedByUserId], references: [id])
+  addedByUserId                        String
+  uploadedDate                         DateTime @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model EBRC {
+  id                             String   @id @default(cuid())
+  firmName                       String   @default("")
+  address                        String   @default("")
+  iec                            String   @default("")
+  shippingBillNo                 String   @default("")
+  shippingBillDate               String   @default("")
+  shippingBillPort               String   @default("")
+  bankName                       String   @default("")
+  bankFileNoAndUploadedDate      String   @default("")
+  billIdNo                       String   @default("")
+  bankRealisationCertificateNo   String   @default("")
+  dateOfRealisationOfMoneyByBank String   @default("")
+  realisedValueInForeignCurrency String   @default("")
+  currencyOfRealisation          String   @default("")
+  dateTimeOfPrinting             String   @default("")
+  user                           user     @relation(fields: [addedByUserId], references: [id])
+  addedByUserId                  String
+  uploadedDate                   DateTime @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model EInvoice {
+  id              String  @id @default(cuid())
+  sellerName      String? @default("")
+  sellerAddress   String? @default("")
+  sellerPanNumber String? @default("")
+  sellerGstNumber String? @default("")
+
+  eInvoiceDetailQRCode     String? @default("")
+  eInvoiceDetailIrnNo      String? @default("")
+  eInvoiceDetailAckNo      String? @default("")
+  eInvoiceDetailAckDate    String? @default("")
+  eInvoiceDetailEWayBillNo String? @default("")
+
+  BuyerDetailBillToName          String? @default("")
+  BuyerDetailBillToAddress       String? @default("")
+  BuyerDetailBillToContactNumber String? @default("")
+  BuyerDetailBillToGstNumber     String? @default("")
+
+  BuyerDetailShipToName          String? @default("")
+  BuyerDetailShipToAddress       String? @default("")
+  BuyerDetailShipToContactNumber String? @default("")
+  BuyerDetailShipToGstNumber     String? @default("")
+
+  invoiceDetailNumber            String? @default("")
+  invoiceDetailDate              String? @default("")
+  invoiceDetailQuickResponseCode String? @default("")
+
+  subTotal      String? @default("")
+  amountInWords String? @default("")
+  notes         String? @default("")
+
+  bankDetailBankName      String? @default("")
+  bankDetailAccountNumber String? @default("")
+  bankDetailIfscCode      String? @default("")
+
+  taxCalculationTaxRate              String? @default("")
+  taxCalculationIgstEitherCgstOrSgst String? @default("")
+
+  termsAndConditions  String? @default("")
+  authorizedSignature String? @default("")
+
+  user          user     @relation(fields: [addedByUserId], references: [id])
+  addedByUserId String
+  uploadedDate  DateTime @default(now())
+
+  productDetails EInvoiceProductDetail[]
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model EInvoiceProductDetail {
+  id                             String  @id @default(cuid())
+  productDetailSrNo              String? @default("")
+  productDetailDescription       String? @default("")
+  productDetailHSN               String? @default("")
+  productDetailTypeOfProductsUQC String? @default("")
+  productDetailQty               String? @default("")
+  productDetailRateOfProduct     String? @default("")
+  productDetailAmount            String? @default("")
+  productDetailTaxPayableOnRcm   String? @default("")
+
+  eInvoiceId String
+  eInvoice   EInvoice @relation(fields: [eInvoiceId], references: [id])
+
+  @@index([eInvoiceId], name: "eInvoiceId")
+}
+
+model AdvanceLicense {
+  id           String @id @default(cuid())
+  srNo         String @default("")
+  customerName String @default("")
+  licenseNo    String @default("")
+  licenseDate  String @default("")
+  fileNo       String @default("")
+  fileDate     String @default("")
+  sion         String @default("")
+  licenseType  String @default("")
+
+  importDataQuantity       String @default("")
+  importDataCifValueInr    String @default("")
+  importDataCifValueUsd    String @default("")
+  importDataDutySavedValue String @default("")
+
+  exportDataQuantity             String @default("")
+  exportDataFobValueInr          String @default("")
+  exportDataFobValueUsd          String @default("")
+  exportDataValueAdditionPercent String @default("")
+
+  actualImportQuantity          String @default("")
+  actualImportCifValueInr       String @default("")
+  actualImportCifValueUsd       String @default("")
+  actualImportDutySavedValue    String @default("")
+  actualImportNoOfBillOfEntries String @default("")
+
+  exportObligationImposedQuantity             String @default("")
+  exportObligationImposedFobValueInr          String @default("")
+  exportObligationImposedFobValueUsd          String @default("")
+  exportObligationImposedValueAdditionPercent String @default("")
+
+  exportDataActualDoneDirectExportQuantity             String @default("")
+  exportDataActualDoneDirectExportFobValueInr          String @default("")
+  exportDataActualDoneDirectExportFobValueUsd          String @default("")
+  exportDataActualDoneDirectExportValueAdditionPercent String @default("")
+  exportDataActualDoneDirectExportNoOfShippingBills    String @default("")
+
+  exportDataActualDoneIndirectExportQuantity             String @default("")
+  exportDataActualDoneIndirectExportFobValueInr          String @default("")
+  exportDataActualDoneIndirectExportFobValueUsd          String @default("")
+  exportDataActualDoneIndirectExportValueAdditionPercent String @default("")
+  exportDataActualDoneIndirectExportNoOfShippingBills    String @default("")
+
+  exportDataActualDoneTotalExportQuantity             String @default("")
+  exportDataActualDoneTotalExportFobValueInr          String @default("")
+  exportDataActualDoneTotalExportFobValueUsd          String @default("")
+  exportDataActualDoneTotalExportValueAdditionPercent String @default("")
+  exportDataActualDoneTotalExportNoOfShippingBills    String @default("")
+
+  remarks       String   @default("")
+  user          user     @relation(fields: [addedByUserId], references: [id])
+  addedByUserId String
+  uploadedDate  DateTime @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model DocumentEpcgLicense {
+  id           String @id @default(cuid())
+  srNo         String @default("")
+  customerName String @default("")
+  licenseNo    String @default("")
+  licenseDate  String @default("")
+  fileNo       String @default("")
+  fileDate     String @default("")
+  licenseType  String @default("")
+
+  bankGuaranteeAmountRs     String @default("")
+  bankGuaranteeValidityFrom String @default("")
+  bankGuaranteeValidityTo   String @default("")
+  bankGuaranteeSubmittedTo  String @default("")
+
+  dutySavedValueAmountInr           String                              @default("")
+  DocumentEpcgLicenseEoAsPerLicense DocumentEpcgLicenseEoAsPerLicense[]
+
+  dutyUtilizedValue String @default("")
+
+  remarks String @default("")
+
+  user                            user                              @relation(fields: [addedByUserId], references: [id])
+  addedByUserId                   String
+  uploadedDate                    DateTime                          @default(now())
+  DocumentEpcgLicenseActualExport DocumentEpcgLicenseActualExport[]
+
+  @@index([addedByUserId], name: "userId")
+}
+
+model DocumentEpcgLicenseEoAsPerLicense {
+  id String @id @default(cuid())
+
+  hsCodeEoInr      String @default("")
+  descriptionEoUsd String @default("")
+
+  DocumentEpcgLicense DocumentEpcgLicense @relation(fields: [epcgLicenseId], references: [id])
+  epcgLicenseId       String
+
+  @@index([epcgLicenseId], name: "epcgLicenseId")
+}
+
+model DocumentEpcgLicenseActualExport {
+  id                          String @id @default(cuid())
+  hsCodeEoImposedAsPerLicense String @default("")
+  descriptionNoOfYears        String @default("")
+  descriptionTotalAEOImposed  String @default("")
+
+  DocumentEpcgLicense DocumentEpcgLicense @relation(fields: [epcgLicenseId], references: [id])
+  epcgLicenseId       String
+
+  @@index([epcgLicenseId], name: "epcgLicenseId")
+}
+
+model HSCode2Bit {
+  id        String @id @default(cuid())
+  HSCode    String
+  Commodity String
+}
+
+model HSCode4Bit {
+  id        String @id @default(cuid())
+  HSCode    String
+  Commodity String
+}
+
+model HSCode6Bit {
+  id        String @id @default(cuid())
+  HSCode    String
+  Commodity String
+}
+
+model HSCode8Bit {
+  id        String @id @default(cuid())
+  HSCode    String
+  Commodity String
+}
+
+model EpcgLicenseSummary {
+  id                                                    String   @id @default(cuid())
+  srNo                                                  String?  @db.Text
+  partyName                                             String?  @db.Text
+  licenseNo                                             String?  @db.Text
+  licenseDate                                           String?  @db.Text
+  fileNo                                                String?  @db.Text
+  fileDate                                              String?  @db.Text
+  licenseType                                           String?  @db.Text
+  bankGuaranteeAmountRs                                 String?  @db.Text
+  bankGuaranteeValidityFrom                             String?  @db.Text
+  bankGuaranteeValidityTo                               String?  @db.Text
+  bankGuaranteeSubmittedTo                              String?  @db.Text
+  dutySavedValueAmountInr                               String?  @db.Text
+  hsCodeAsPerLicenseEoInr                               String?  @db.Text
+  descriptionAsPerLicenseEoUsd                          String?  @db.Text
+  dutySavedValueDutyUtilizedValue                       String?  @db.Text
+  hsCodeAsPerEoFullfillmentSummaryEoInr                 String?  @db.Text
+  descriptionAsPerEoFullfillmentSummaryEoUsd            String?  @db.Text
+  installationDate                                      String?  @db.Text
+  averageExportImposedAsPerLicenseInr                   String?  @db.Text
+  averageExportNoOfYears                                String?  @db.Text
+  averageExportTotalAeoImposedInr                       String?  @db.Text
+  averageExportFulfilledInr                             String?  @db.Text
+  averageExportNoOfShippingBills                        String?  @db.Text
+  averageExportFulfilledPercent                         String?  @db.Text
+  block1stImposedBlockCompletionDate                    String?  @db.Text
+  block1stImposedBlockExtension                         String?  @db.Text
+  block1stImposedExtensionYearIfAny                     String?  @db.Text
+  block1stImposedBlockExtensionDate                     String?  @db.Text
+  block1stImposedBlockBlanceDaysCompletionDate          String?  @db.Text
+  block1stImposedBlockBlanceDaysExtensionDate           String?  @db.Text
+  block1stImposedEoInr                                  String?  @db.Text
+  block1stImposedEoUsd                                  String?  @db.Text
+  block1stDirectExportEoInr                             String?  @db.Text
+  block1stDirectExportEoUsd                             String?  @db.Text
+  block1stDirectExportNoOfShippingBills                 String?  @db.Text
+  block1stDirectExportPercent                           String?  @db.Text
+  block1stDirectExportPropDutySaved                     String?  @db.Text
+  block1stIndirectExportEoInr                           String?  @db.Text
+  block1stIndirectExportEoUsd                           String?  @db.Text
+  block1stIndirectExportNoOfShippingBills               String?  @db.Text
+  block1stIndirectExportPercent                         String?  @db.Text
+  block1stIndirectExportPropDutySaved                   String?  @db.Text
+  block1stTotalExportEoInr                              String?  @db.Text
+  block1stTotalExportEoUsd                              String?  @db.Text
+  block1stTotalExportNoOfShippingBills                  String?  @db.Text
+  block1stTotalExportPercent                            String?  @db.Text
+  block1stTotalExportPropDutySaved                      String?  @db.Text
+  block1stDifferentialEoEoInr                           String?  @db.Text
+  block1stDifferentialEoEoInrPercent                    String?  @db.Text
+  block1stDifferentialEoEoUsd                           String?  @db.Text
+  block1stDifferentialEoEoUsdPercent                    String?  @db.Text
+  block1stDifferentialEoPropDutySaved                   String?  @db.Text
+  block2ndImposed2ndBlockEoPeriodCompletionDate         String?  @db.Text
+  block2ndImposedEoPeriodExtensionIfAny                 String?  @db.Text
+  block2ndImposedEoPeriodExtensionYear                  String?  @db.Text
+  block2ndImposedEoPeriodExtensionDate                  String?  @db.Text
+  block2ndImposedEoPeriodBalanceDaysCompletionDate      String?  @db.Text
+  block2ndImposedEoPeriodBalanceDaysExtensionDate       String?  @db.Text
+  block2ndImposedEoInr                                  String?  @db.Text
+  block2ndImposedEoUsd                                  String?  @db.Text
+  block2ndDirectExportEoInr                             String?  @db.Text
+  block2ndDirectExportEoUsd                             String?  @db.Text
+  block2ndDirectExportNoOfShippingBills                 String?  @db.Text
+  block2ndDirectExportPercent                           String?  @db.Text
+  block2ndDirectExportPropDutySaved                     String?  @db.Text
+  block2ndIndirectExportEoInr                           String?  @db.Text
+  block2ndIndirectExportEoUsd                           String?  @db.Text
+  block2ndIndirectExportNoOfShippingBills               String?  @db.Text
+  block2ndIndirectExportPercent                         String?  @db.Text
+  block2ndIndirectExportPropDutySaved                   String?  @db.Text
+  block2ndTotalExportEoInr                              String?  @db.Text
+  block2ndTotalExportEoUsd                              String?  @db.Text
+  block2ndTotalExportNoOfShippingBills                  String?  @db.Text
+  block2ndTotalExportPercent                            String?  @db.Text
+  block2ndTotalExportPropDutySaved                      String?  @db.Text
+  block2ndDifferentialEoEoInr                           String?  @db.Text
+  block2ndDifferentialEoEoInrPercent                    String?  @db.Text
+  block2ndDifferentialEoEoUsd                           String?  @db.Text
+  block2ndDifferentialEoEoUsdPercent                    String?  @db.Text
+  block2ndDifferentialEoPropDutySaved                   String?  @db.Text
+  totalEoPeriodImposedEoPeriodCompletionDate            String?  @db.Text
+  totalEoPeriodImposedEoPeriodExtensionIfAny            String?  @db.Text
+  totalEoPeriodImposedEoPeriodExtensionYear             String?  @db.Text
+  totalEoPeriodImposedEoPeriodExtensionDate             String?  @db.Text
+  totalEoPeriodImposedEoPeriodBalanceDaysCompletionDate String?  @db.Text
+  totalEoPeriodImposedEoPeriodBalanceDaysExtensionDate  String?  @db.Text
+  totalEoPeriodImposedEoInr                             String?  @db.Text
+  totalEoPeriodImposedEoUsd                             String?  @db.Text
+  totalEOPeriodDirectExportEoInr                        String?  @db.Text
+  totalEOPeriodDirectExportEoUsd                        String?  @db.Text
+  totalEOPeriodDirectExportNoOfShippingBills            String?  @db.Text
+  totalEOPeriodDirectExportPercent                      String?  @db.Text
+  totalEOPeriodDirectExportPropDutySaved                String?  @db.Text
+  totalEOPeriodIndirectExportEoInr                      String?  @db.Text
+  totalEOPeriodIndirectExportEoUsd                      String?  @db.Text
+  totalEOPeriodIndirectExportNoOfShippingBills          String?  @db.Text
+  totalEOPeriodIndirectExportPercent                    String?  @db.Text
+  totalEOPeriodIndirectExportPropDutySaved              String?  @db.Text
+  totalEOPeriodTotalExportEoInr                         String?  @db.Text
+  totalEOPeriodTotalExportEoUsd                         String?  @db.Text
+  totalEOPeriodTotalExportNoOfShippingBills             String?  @db.Text
+  totalEOPeriodTotalExportPercent                       String?  @db.Text
+  totalEOPeriodTotalExportPropDutySaved                 String?  @db.Text
+  totalEoPeriodDifferentialEoEoInr                      String?  @db.Text
+  totalEoPeriodDifferentialEoEoInrPercent               String?  @db.Text
+  totalEoPeriodDifferentialEoEoUsd                      String?  @db.Text
+  totalEoPeriodDifferentialEoEoUsdPercent               String?  @db.Text
+  totalEoPeriodDifferentialEoPropDutySaved              String?  @db.Text
+  EarlyEoFullfillment1stEoDate                          String?  @db.Text
+  EarlyEoFullfillmentLastEoDate                         String?  @db.Text
+  EarlyEoFullfillmentEoPeriodWithin3yearsOrNot          String?  @db.Text
+  EarlyEoFullfillmentEarlyEoFullfillment                String?  @db.Text
+  remarks                                               String?  @db.Text
+  user                                                  user     @relation(fields: [addedByUserId], references: [id])
+  addedByUserId                                         String
+  uploadedDate                                          DateTime @default(now())
+
+  @@index([addedByUserId], name: "userId")
+}
+
+// // Report
+
+// model ReportEPCGLicenseSummary {
+//   id          String  @id @default(cuid())
+//   srNo        String? @default("")
+//   partyName   String? @default("")
+//   licenseNo   String? @default("")
+//   licenseDate String? @default("")
+//   fileNo      String? @default("")
+//   fileDate    String? @default("")
+//   licenseType String? @default("")
+
+//   bankGuaranteeAmountRs     String? @default("")
+//   bankGuaranteeValidityFrom String? @default("")
+//   bankGuaranteeValidityTo   String? @default("")
+//   bankGuaranteeSubmittedTo  String? @default("")
+
+//   dutySavedValueAmountInr String? @default("")
+
+//   ReportEpcgLicenseSummaryEoAsPerLicense ReportEpcgLicenseSummaryEoAsPerLicense[]
+
+//   duetyUtilizedValue String? @default("")
+
+//   ReportDocumentEpcgLicenseSummaryActualExport ReportDocumentEpcgLicenseSummaryActualExport[]
+//   installationDate                       String? @default("")
+
+//   AverageExportImposedAsPerLicenseInr String? @default("")
+//   AverageExportNoOfYears              String? @default("")
+//   AverageExportTotalAeoImposedInr     String? @default("")
+//   AverageExportFulfilledInr           String? @default("")
+//   AverageExportNoOfShippingBills      String? @default("")
+//   AverageExportFulfilledPercent       String? @default("")
+
+//   block1stImposedBlockCompletionDate String? @default("")
+//   block1stImposedEoInr               String? @default("")
+//   block1stImposedEoUsd               String? @default("")
+
+//   block1stDirectExportEoInr             String? @default("")
+//   block1stDirectExportEoUsd             String? @default("")
+//   block1stDirectExportNoOfShippingBills String? @default("")
+//   block1stDirectExportPercent           String? @default("")
+//   block1stDirectExportPropDutySaved     String? @default("")
+
+//   block1stIndirectExportEoInr             String? @default("")
+//   block1stIndirectExportEoUsd             String? @default("")
+//   block1stIndirectExportNoOfShippingBills String? @default("")
+//   block1stIndirectExportPercent           String? @default("")
+//   block1stIndirectExportPropDutySaved     String? @default("")
+
+//   block1stTotalExportEoInr             String? @default("")
+//   block1stTotalExportEoUsd             String? @default("")
+//   block1stTotalExportNoOfShippingBills String? @default("")
+//   block1stTotalExportPercent           String? @default("")
+//   block1stTotalExportPropDutySaved     String? @default("")
+
+//   block2ndImposedBlockCompletionDate String? @default("")
+//   block2ndImposedEoInr               String? @default("")
+//   block2ndImposedEoUsd               String? @default("")
+
+//   block2ndDirectExportEoInr             String? @default("")
+//   block2ndDirectExportEoUsd             String? @default("")
+//   block2ndDirectExportNoOfShippingBills String? @default("")
+//   block2ndDirectExportPercent           String? @default("")
+//   block2ndDirectExportPropDutySaved     String? @default("")
+
+//   block2ndIndirectExportEoInr             String? @default("")
+//   block2ndIndirectExportEoUsd             String? @default("")
+//   block2ndIndirectExportNoOfShippingBills String? @default("")
+//   block2ndIndirectExportPercent           String? @default("")
+//   block2ndIndirectExportPropDutySaved     String? @default("")
+
+//   block2ndTotalExportEoInr             String? @default("")
+//   block2ndTotalExportEoUsd             String? @default("")
+//   block2ndTotalExportNoOfShippingBills String? @default("")
+//   block2ndTotalExportPercent           String? @default("")
+//   block2ndTotalExportPropDutySaved     String? @default("")
+
+//   totalEOPeriodDirectExportEoInr             String? @default("")
+//   totalEOPeriodDirectExportEoUsd             String? @default("")
+//   totalEOPeriodDirectExportNoOfShippingBills String? @default("")
+//   totalEOPeriodDirectExportPercent           String? @default("")
+//   totalEOPeriodDirectExportPropDutySaved     String? @default("")
+
+//   totalEOPeriodIndirectExportEoInr             String? @default("")
+//   totalEOPeriodIndirectExportEoUsd             String? @default("")
+//   totalEOPeriodIndirectExportNoOfShippingBills String? @default("")
+//   totalEOPeriodIndirectExportPercent           String? @default("")
+//   totalEOPeriodIndirectExportPropDutySaved     String? @default("")
+
+//   totalEOPeriodTotalExportEoInr             String? @default("")
+//   totalEOPeriodTotalExportEoUsd             String? @default("")
+//   totalEOPeriodTotalExportNoOfShippingBills String? @default("")
+//   totalEOPeriodTotalExportPercent           String? @default("")
+//   totalEOPeriodTotalExportPropDutySaved     String? @default("")
+//   remarks                                   String? @default("")
+
+//   user                                          user                                            @relation(fields: [addedByUserId], references: [id])
+//   addedByUserId                                 String
+//   uploadedDate                                  DateTime                                        @default(now())
+
+//   @@index([addedByUserId], name: "userId")
+// }
+
+// model ReportEpcgLicenseSummaryEoAsPerLicense {
+//   id String @id @default(cuid())
+
+//   hsCodeEoInr      String @default("")
+//   descriptionEoUsd String @default("")
+
+//   ReportEPCGLicenseSummary ReportEPCGLicenseSummary @relation(fields: [epcgLicenseSummaryId], references: [id])
+//   epcgLicenseSummaryId     String
+
+//   @@index([epcgLicenseSummaryId], name: "epcgLicenseSummaryId")
+// }
+
+// model ReportDocumentEpcgLicenseSummaryActualExport {
+//   id                          String @id @default(cuid())
+//   hsCodeEoImposedAsPerLicense String @default("")
+//   descriptionNoOfYears        String @default("")
+//   descriptionTotalAEOImposed  String @default("")
+
+//   ReportEPCGLicenseSummary ReportEPCGLicenseSummary @relation(fields: [epcgLicenseSummaryId], references: [id])
+//   epcgLicenseSummaryId     String
+
+//   @@index([epcgLicenseSummaryId], name: "epcgLicenseSummaryId")
+// }
+
+// model ReportEPCGLicenseSummary1stBlock {
+
+// }
